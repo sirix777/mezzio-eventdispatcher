@@ -1,5 +1,5 @@
 {
-    "name": "php-cmd/mezzio-eventdispatcher",
+    "name": "webware/mezzio-eventdispatcher",
     "description": "League EventDispatcher",
     "license": "BSD-3-Clause",
     "keywords": [
@@ -10,10 +10,10 @@
         "psr14",
         "mezzio"
     ],
-    "homepage": "https://github.com/php-cmd/mezzio-eventdispatcher",
+    "homepage": "https://github.com/webware/mezzio-eventdispatcher",
     "support": {
-        "issues": "https://github.com/php-cmd/mezzio-eventdispatcher/issues",
-        "source": "https://github.com/php-cmd/mezzio-eventdispatcher"
+        "issues": "https://github.com/webware/mezzio-eventdispatcher/issues",
+        "source": "https://github.com/webware/mezzio-eventdispatcher"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -51,13 +51,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Axleus\\Event\\": "src/"
+            "Webware\\Event\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Axleus\\EventTest\\": "test/unit/",
-            "Axleus\\EventIntegrationTest\\": "test/integration/"
+            "Webware\\EventTest\\": "test/unit/",
+            "Webware\\EventIntegrationTest\\": "test/integration/"
         }
     },
     "scripts": {

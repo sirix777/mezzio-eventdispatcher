@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Webware\Event;
 
-use League\Event\HasEventName;
-
-class Event implements HasEventName
+class Event implements EventInterface
 {
     private readonly string $name;
 
     public function __construct(
-        ?string $name,
+        string $name = self::EVENT_NAME,
         private ?object $target = null,
-        private array $params   = [],
+        private ?array $params  = null,
     ) {
-        $this->name = $name ?? static::class;
+        $this->name = $name !== '' ? $name : static::class;
     }
 
     public function eventName(): string

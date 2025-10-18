@@ -6,8 +6,8 @@ namespace Webware\EventIntegrationTest\TestAsset;
 
 final class ListenerOne
 {
-    public function __invoke(object $event): void
+    public function __invoke(object $event): string
     {
-        $event->calls[] = self::class;
+        return self::class;
     }
 }

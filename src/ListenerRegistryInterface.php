@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Axleus\Event;
+namespace Webware\Event;
 
 use League\Event\ListenerRegistry;
 

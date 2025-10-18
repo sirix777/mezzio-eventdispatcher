@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Axleus\EventIntegrationTest\TestAsset;
+namespace Webware\EventIntegrationTest\TestAsset;
 
 final class ListenerOne
 {

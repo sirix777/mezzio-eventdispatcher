@@ -10,6 +10,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ConfigProvider
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function __invoke(): array
     {
         return [
@@ -19,6 +22,9 @@ final class ConfigProvider
         ];
     }
 
+    /**
+     * @return array<string, array<string, string|class-string>>
+     */
     public function getDependencies(): array
     {
         return [
@@ -33,11 +39,17 @@ final class ConfigProvider
         ];
     }
 
+    /**
+     * @return array<int, array{event: string, listener: string|class-string, priority?: int}>
+     */
     public function getListeners(): array
     {
         return [];
     }
 
+    /**
+     * @return array<int, class-string>
+     */
     public function getSubscribers(): array
     {
         return [];

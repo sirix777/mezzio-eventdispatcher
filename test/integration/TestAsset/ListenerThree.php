@@ -9,7 +9,7 @@ use Webware\Event\ListenerInterface;
 
 use function count;
 
-final class ListenerTwo implements ListenerInterface
+final class ListenerThree implements ListenerInterface
 {
     /** @var array<string> */
     public array $invocations = [];

@@ -10,15 +10,23 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Webware\Event\ConfigKey;
 
+use function assert;
+
 final class EventDispatcherFactory
 {
     public function __invoke(ContainerInterface $container): EventDispatcherInterface
     {
         $listenerSubscriber = $container->get(ListenerSubscriberInterface::class);
-        $dispatcher         = new EventDispatcher();
+        assert($listenerSubscriber instanceof ListenerSubscriberInterface);
+
+        $dispatcher = new EventDispatcher();
         $dispatcher->subscribeListenersFrom($listenerSubscriber);
-        // handle subscribers if any
-        $subscribers = $container->get('config')[ConfigKey::Subscribers->value] ?? [];
+
+        /** @var array<string, mixed> $config */
+        $config = $container->get('config');
+        /** @var class-string<ListenerSubscriberInterface>[] $subscribers */
+        $subscribers = $config[ConfigKey::Subscribers->value] ?? [];
+
         foreach ($subscribers as $subscriber) {
             if ($container->has($subscriber)) {
                 $instance = $container->get($subscriber);
@@ -27,6 +35,7 @@ final class EventDispatcherFactory
                 }
             }
         }
+
         return $dispatcher;
     }
 }

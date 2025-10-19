@@ -18,7 +18,7 @@ final class EventDispatcherFactory
         $dispatcher         = new EventDispatcher();
         $dispatcher->subscribeListenersFrom($listenerSubscriber);
         // handle subscribers if any
-        $subscribers = $container->get(ConfigKey::Subscribers->value);
+        $subscribers = $container->get('config')[ConfigKey::Subscribers->value] ?? [];
         foreach ($subscribers as $subscriber) {
             if ($container->has($subscriber)) {
                 $instance = $container->get($subscriber);

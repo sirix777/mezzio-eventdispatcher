@@ -10,10 +10,10 @@
         "psr14",
         "mezzio"
     ],
-    "homepage": "https://github.com/webware/mezzio-eventdispatcher",
+    "homepage": "https://github.com/tyrsson/mezzio-eventdispatcher",
     "support": {
-        "issues": "https://github.com/webware/mezzio-eventdispatcher/issues",
-        "source": "https://github.com/webware/mezzio-eventdispatcher"
+        "issues": "https://github.com/tyrsson/mezzio-eventdispatcher/issues",
+        "source": "https://github.com/tyrsson/mezzio-eventdispatcher"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -34,13 +34,13 @@
     },
     "require": {
         "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-        "php-cmd/cmd-bus": "^0.3.0",
         "beberlei/assert": "^3.3",
         "league/event": "^3.0",
         "psr/container": "^2.0"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^3.0.1",
+        "laminas/laminas-config-aggregator": "^1.19.0",
         "laminas/laminas-servicemanager": "^4.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-phpunit": "^2.0",
@@ -56,8 +56,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Webware\\EventTest\\": "test/unit/",
-            "Webware\\EventIntegrationTest\\": "test/integration/"
+            "WebwareTest\\": "test/unit/",
+            "WebwareIntegrationTest\\": "test/integration/"
         }
     },
     "scripts": {

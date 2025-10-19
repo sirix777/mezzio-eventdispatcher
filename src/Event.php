@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Webware\Event;
 
-use League\Event\HasEventName;
-
-class Event implements HasEventName
+readonly class Event implements EventInterface
 {
-    private readonly string $name;
-
     public function __construct(
-        ?string $name,
+        private ?string $name   = self::class,
         private ?object $target = null,
-        private array $params   = [],
+        private ?array $params  = null,
     ) {
-        $this->name = $name ?? static::class;
+    }
+
+    public function getName(): string
+    {
+        return $this->eventName();
     }
 
     public function eventName(): string
@@ -23,14 +23,19 @@ class Event implements HasEventName
         return $this->name;
     }
 
+    public function withName(string $name): self
+    {
+        return new self($name, $this->target, $this->params);
+    }
+
     public function getTarget(): ?object
     {
         return $this->target;
     }
 
-    public function setTarget(object $target): void
+    public function withTarget(object $target): self
     {
-        $this->target = $target;
+        return new self($this->name, $target, $this->params);
     }
 
     public function getParams(): array
@@ -38,8 +43,8 @@ class Event implements HasEventName
         return $this->params;
     }
 
-    public function setParams(array $params): void
+    public function withParams(array $params): self
     {
-        $this->params = $params;
+        return new self($this->name, $this->target, $params);
     }
 }

@@ -1,6 +1,7 @@
 # Integration Test Refactoring Summary
 
 ## Overview
+
 The integration tests have been significantly refactored and expanded to provide comprehensive coverage of the event dispatcher functionality.
 
 ## Changes Made
@@ -66,18 +67,21 @@ The main `EventDispatcherTest.php` now includes 15 comprehensive tests:
 ## Testing Best Practices Applied
 
 ### Type Safety (PHPStan Level 10 Compatible)
+
 - All test code includes proper type hints
 - Added `@var` annotations for arrays
 - Used `assertInstanceOf` before accessing methods on container-retrieved objects
 - Fixed all PHPStan errors in test code
 
 ### Code Standards (Laminas Coding Standard)
+
 - Auto-fixed all PHPCS violations
 - Proper spacing and alignment
 - Added missing imports (`use function count`)
 - Removed unused imports
 
 ### Test Organization
+
 - Tests are well-named and follow AAA pattern (Arrange, Act, Assert)
 - Each test has a single, clear responsibility
 - Test assets are reusable across multiple tests
@@ -88,35 +92,42 @@ The main `EventDispatcherTest.php` now includes 15 comprehensive tests:
 The refactored tests now cover:
 
 ✅ **Container Integration**
+
 - Service registration and retrieval
 - PSR-11 and PSR-14 interfaces
 
 ✅ **Event Dispatch**
+
 - Single listener invocation
 - Multiple listeners on same event
 - Events without listeners
 
 ✅ **Listener Priorities**
+
 - High, Normal, and Low priority execution
 - Correct ordering of listener execution
 
 ✅ **Event Subscribers**
+
 - Subscriber registration via configuration
 - Multiple events per subscriber
 - Integration with League Event package
 
 ✅ **Event Immutability**
+
 - `withName()`, `withTarget()`, `withParams()` create new instances
 - Original events remain unchanged
 - Chaining immutable operations
 
 ✅ **Event Properties**
+
 - Event name
 - Event target objects
 - Event parameters (arrays)
 - Complex events with all properties
 
 ✅ **Edge Cases**
+
 - Unregistered events handled gracefully
 - Exact event name matching (no partial matches)
 
@@ -138,6 +149,7 @@ composer check
 ## Results
 
 All 15 integration tests pass with 56 assertions:
+
 - ✅ 15 tests
 - ✅ 56 assertions
 - ✅ 0 failures

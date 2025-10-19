@@ -6,7 +6,6 @@ namespace Psr\Container;
 
 /**
  * PHPStan stub for Psr\Container\ContainerInterface
- * This is a type alias to help PHPStan understand the interface in the PhpCmd\CmdBus namespace context.
  */
 interface ContainerInterface
 {

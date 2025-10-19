@@ -23,7 +23,7 @@ final class ConfigProvider
     }
 
     /**
-     * @return array<string, array<string, string|class-string>>
+     * @return array<string, array<class-string, class-string>>
      */
     public function getDependencies(): array
     {
@@ -40,7 +40,7 @@ final class ConfigProvider
     }
 
     /**
-     * @return array<int, array{event: string, listener: string|class-string, priority?: int}>
+     * @return array<int, array{event: string, listener: class-string, priority?: int}>
      */
     public function getListeners(): array
     {
@@ -48,7 +48,7 @@ final class ConfigProvider
     }
 
     /**
-     * @return array<int, class-string>
+     * @return array<int, class-string<ListenerSubscriberInterface>>
      */
     public function getSubscribers(): array
     {

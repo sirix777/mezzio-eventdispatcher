@@ -56,8 +56,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Webware\\EventTest\\": "test/unit/",
-            "Webware\\EventIntegrationTest\\": "test/integration/"
+            "WebwareTest\\": "test/unit/",
+            "WebwareIntegrationTest\\": "test/integration/"
         }
     },
     "scripts": {

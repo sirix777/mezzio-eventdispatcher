@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webware\EventIntegrationTest\TestAsset;
+namespace WebwareIntegrationTest\TestAsset;
 
+use League\Event\Listener;
+use Webware\Event\ConfigKey;
 use Webware\Event\ListenerPriority;
 
 final class ConfigProvider
@@ -11,19 +13,28 @@ final class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => $this->getDependencies(),
+            'dependencies'                => $this->getDependencies(),
+            ConfigKey::Listeners->value   => $this->getListeners(),
+            ConfigKey::Subscribers->value => [],
         ];
     }
 
     private function getDependencies(): array
     {
         return [
-            'listeners' => [
-                [
-                    'event'    => 'some.event.name',
-                    'listener' => ListenerOne::class,
-                    'priority' => ListenerPriority::High->value,
-                ],
+            'invokables' => [
+                ListenerOne::class => ListenerOne::class,
+            ],
+        ];
+    }
+
+    private function getListeners(): array
+    {
+        return [
+            [
+                'event'    => 'some.event.name',
+                'listener' => ListenerOne::class,
+                'priority' => ListenerPriority::High->value,
             ],
         ];
     }

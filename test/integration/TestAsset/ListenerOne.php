@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Webware\EventIntegrationTest\TestAsset;
+namespace WebwareIntegrationTest\TestAsset;
+
+use Webware\Event\EventInterface;
 
 final class ListenerOne
 {
-    public function __invoke(object $event): string
+    public function __invoke(EventInterface $event): string
     {
-        return self::class;
+        return $event->getName();
     }
 }

@@ -48,9 +48,14 @@ return $aggregator->getMergedConfig();
 ### 2. Create an Event
 
 ```php
-use Webware\Event\Event;
+use Webware\Event\ImmutableEvent;
 
-$event = new Event('user.created', $user, ['timestamp' => time()]);
+// Immutable event (recommended for most use cases)
+$event = new ImmutableEvent('user.created', $user, ['timestamp' => time()]);
+
+// OR use mutable event when needed
+use Webware\Event\MutableEvent;
+$event = new MutableEvent('user.created', $user, ['timestamp' => time()]);
 ```
 
 ### 3. Create a Listener
@@ -98,6 +103,7 @@ return [
 
 ```php
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Webware\Event\ImmutableEvent;
 
 class UserService
 {
@@ -109,8 +115,8 @@ class UserService
     {
         $user = new User($data);
 
-        // Dispatch event
-        $event = new Event('user.created', $user);
+        // Dispatch immutable event
+        $event = new ImmutableEvent('user.created', $user);
         $this->dispatcher->dispatch($event);
 
         return $user;
@@ -126,6 +132,7 @@ Comprehensive documentation is available in the [docs/](docs/) directory:
 - **[Basic Usage](docs/basic-usage.md)** - Getting started with events, listeners, and dispatching
 - **[Configuration](docs/configuration.md)** - Configuration options and best practices
 - **[Events](docs/events.md)** - Creating and working with events
+- **[Event Types](docs/event-types.md)** - Understanding immutable vs mutable events
 - **[Listeners](docs/listeners.md)** - Creating and registering event listeners
 - **[Subscribers](docs/subscribers.md)** - Using listener subscribers for complex event handling
 - **[Priorities](docs/priorities.md)** - Managing listener execution order
@@ -139,7 +146,7 @@ A complete example demonstrating all features:
 
 ```php
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Webware\Event\Event;
+use Webware\Event\ImmutableEvent;
 
 // In your service
 class OrderService
@@ -153,8 +160,8 @@ class OrderService
         // Process order...
         $order->setStatus('completed');
 
-        // Dispatch event with context
-        $event = new Event(
+        // Dispatch immutable event with context
+        $event = new ImmutableEvent(
             name: 'order.completed',
             target: $order,
             params: [

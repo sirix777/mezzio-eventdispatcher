@@ -6,17 +6,16 @@ Complete API documentation for the Mezzio Event Dispatcher library.
 
 ### EventInterface
 
+Base interface for all events:
+
 ```php
 namespace Webware\Event;
 
 interface EventInterface extends \League\Event\HasEventName
 {
     public function getName(): string;
-    public function withName(string $name): self;
     public function getTarget(): ?object;
-    public function withTarget(object $target): self;
     public function getParams(): ?array;
-    public function withParams(array $params): self;
 }
 ```
 
@@ -24,11 +23,62 @@ interface EventInterface extends \League\Event\HasEventName
 
 - `getName(): string` - Returns the event name identifier
 - `eventName(): string` - Alias for `getName()`, required by `HasEventName`
-- `withName(string $name): self` - Returns new instance with different name
 - `getTarget(): ?object` - Returns the target object or null
+- `getParams(): ?array` - Returns parameters array or null
+
+### ImmutableEventInterface
+
+Interface for immutable events:
+
+```php
+namespace Webware\Event;
+
+interface ImmutableEventInterface extends EventInterface
+{
+    public function withName(string $name): self;
+    public function withTarget(object $target): self;
+    public function withParams(array $params): self;
+}
+```
+
+**Methods:**
+
+- `withName(string $name): self` - Returns new instance with different name
 - `withTarget(object $target): self` - Returns new instance with different target
-- `getParams(): ?array` - Returns parameters array or empty array
 - `withParams(array $params): self` - Returns new instance with different params
+
+**Characteristics:**
+
+- All `with*()` methods return new instances
+- Original event remains unchanged
+- Thread-safe and predictable
+
+### MutableEventInterface
+
+Interface for mutable events:
+
+```php
+namespace Webware\Event;
+
+interface MutableEventInterface extends EventInterface
+{
+    public function setName(string $name): void;
+    public function setTarget(object $target): void;
+    public function setParams(array $params): void;
+}
+```
+
+**Methods:**
+
+- `setName(string $name): void` - Modifies event name in place
+- `setTarget(object $target): void` - Modifies target object in place
+- `setParams(array $params): void` - Modifies parameters in place
+
+**Characteristics:**
+
+- All `set*()` methods modify the same instance
+- No return value (void)
+- Useful for progressive enrichment
 
 ### ListenerInterface
 
@@ -47,15 +97,15 @@ interface ListenerInterface
 
 ## Classes
 
-### Event
+### ImmutableEvent
 
 ```php
 namespace Webware\Event;
 
-final readonly class Event implements EventInterface
+readonly class ImmutableEvent implements ImmutableEventInterface
 {
     public function __construct(
-        private ?string $name = null,
+        private ?string $name = self::class,
         private ?object $target = null,
         private ?array $params = null,
     ) {}
@@ -74,6 +124,53 @@ final readonly class Event implements EventInterface
 - Returns self class name if name is null
 - Returns empty array for params if null
 - All `with*()` methods return new instances
+- Thread-safe and predictable
+
+**Example:**
+
+```php
+$event = new ImmutableEvent('user.created', $user, ['source' => 'api']);
+$modified = $event->withName('user.registered');
+// $event still has name 'user.created'
+```
+
+### MutableEvent
+
+```php
+namespace Webware\Event;
+
+class MutableEvent implements MutableEventInterface
+{
+    public function __construct(
+        private ?string $name = self::class,
+        private ?object $target = null,
+        private ?array $params = null,
+    ) {}
+}
+```
+
+**Constructor Parameters:**
+
+- `$name` (string|null) - Event name, defaults to class name if null
+- `$target` (object|null) - Target object
+- `$params` (array|null) - Additional parameters
+
+**Features:**
+
+- Regular class - properties can be modified
+- Returns self class name if name is null
+- Returns empty array for params if null
+- All `set*()` methods modify in place (return void)
+- Useful for progressive enrichment
+
+**Example:**
+
+```php
+$event = new MutableEvent('order.placed', $order);
+$event->setName('order.confirmed');
+$event->setParams(['status' => 'confirmed']);
+// Same $event instance is modified
+```
 
 ### ConfigProvider
 

@@ -38,9 +38,11 @@ class EventAggregator
 }
 
 // Usage
-$aggregator->record(new Event('user.created', $user1));
-$aggregator->record(new Event('user.created', $user2));
-$aggregator->record(new Event('user.created', $user3));
+use Webware\Event\ImmutableEvent;
+
+$aggregator->record(new ImmutableEvent('user.created', $user1));
+$aggregator->record(new ImmutableEvent('user.created', $user2));
+$aggregator->record(new ImmutableEvent('user.created', $user3));
 
 // Dispatch all at once
 $aggregator->flush();
@@ -51,7 +53,9 @@ $aggregator->flush();
 Handle event schema evolution:
 
 ```php
-class UserCreatedEventV2 extends Event
+use Webware\Event\ImmutableEvent;
+
+class UserCreatedEventV2 extends ImmutableEvent
 {
     public const VERSION = 2;
 
@@ -288,7 +292,9 @@ class EventStore
     private function reconstructEvent(array $row): EventInterface
     {
         // Reconstruct event from stored data
-        return new Event(
+        use Webware\Event\ImmutableEvent;
+
+        return new ImmutableEvent(
             $row['name'],
             null, // Would need to reconstruct target
             json_decode($row['params'], true)
@@ -325,7 +331,9 @@ class CreateUserCommand extends Event
 }
 
 // Query events (reads)
-class GetUserQuery extends Event
+use Webware\Event\ImmutableEvent;
+
+class GetUserQuery extends ImmutableEvent
 {
     public function __construct(int $userId)
     {
@@ -343,7 +351,7 @@ class CreateUserCommandHandler implements ListenerInterface
         $user->save();
 
         // Dispatch domain event
-        $this->dispatcher->dispatch(new Event('user.created', $user));
+        $this->dispatcher->dispatch(new ImmutableEvent('user.created', $user));
     }
 }
 
@@ -375,23 +383,25 @@ class OrderSaga
 
     public function start(Order $order): void
     {
+        use Webware\Event\ImmutableEvent;
+
         $this->state = ['order_id' => $order->getId(), 'step' => 'payment'];
 
         try {
             // Step 1: Process payment
-            $this->dispatcher->dispatch(new Event('payment.process', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('payment.process', $order));
             $this->state['step'] = 'inventory';
 
             // Step 2: Reserve inventory
-            $this->dispatcher->dispatch(new Event('inventory.reserve', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('inventory.reserve', $order));
             $this->state['step'] = 'shipping';
 
             // Step 3: Schedule shipping
-            $this->dispatcher->dispatch(new Event('shipping.schedule', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('shipping.schedule', $order));
             $this->state['step'] = 'complete';
 
             // Success
-            $this->dispatcher->dispatch(new Event('order.completed', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('order.completed', $order));
         } catch (\Exception $e) {
             // Rollback
             $this->compensate($order);
@@ -401,13 +411,15 @@ class OrderSaga
 
     private function compensate(Order $order): void
     {
+        use Webware\Event\ImmutableEvent;
+
         // Undo completed steps in reverse order
         if ($this->state['step'] === 'shipping') {
-            $this->dispatcher->dispatch(new Event('inventory.release', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('inventory.release', $order));
         }
 
         if (in_array($this->state['step'], ['inventory', 'shipping'])) {
-            $this->dispatcher->dispatch(new Event('payment.refund', $order));
+            $this->dispatcher->dispatch(new ImmutableEvent('payment.refund', $order));
         }
     }
 }

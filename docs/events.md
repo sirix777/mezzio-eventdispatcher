@@ -2,9 +2,13 @@
 
 This guide provides detailed information about creating and working with events in the Mezzio Event Dispatcher library.
 
-## Event Interface
+## Event Interfaces
 
-All events implement the `EventInterface`:
+The library provides a flexible event system with three interfaces:
+
+### EventInterface (Base Interface)
+
+All events implement the base `EventInterface`:
 
 ```php
 namespace Webware\Event;
@@ -12,29 +16,58 @@ namespace Webware\Event;
 interface EventInterface extends \League\Event\HasEventName
 {
     public function getName(): string;
-    public function withName(string $name): self;
     public function getTarget(): ?object;
-    public function withTarget(object $target): self;
     public function getParams(): ?array;
+}
+```
+
+### ImmutableEventInterface
+
+For immutable events that return new instances:
+
+```php
+namespace Webware\Event;
+
+interface ImmutableEventInterface extends EventInterface
+{
+    public function withName(string $name): self;
+    public function withTarget(object $target): self;
     public function withParams(array $params): self;
 }
 ```
 
-## Using the Event Class
+### MutableEventInterface
 
-The library provides a concrete `Event` class implementing `EventInterface`:
+For mutable events that modify in place:
 
 ```php
-use Webware\Event\Event;
+namespace Webware\Event;
+
+interface MutableEventInterface extends EventInterface
+{
+    public function setName(string $name): void;
+    public function setTarget(object $target): void;
+    public function setParams(array $params): void;
+}
+```
+
+## Choosing Between Immutable and Mutable Events
+
+### ImmutableEvent (Recommended)
+
+Use `ImmutableEvent` for most scenarios:
+
+```php
+use Webware\Event\ImmutableEvent;
 
 // Create an event with just a name
-$event = new Event('user.login');
+$event = new ImmutableEvent('user.login');
 
 // With a target object
-$event = new Event('user.login', $user);
+$event = new ImmutableEvent('user.login', $user);
 
 // With target and parameters
-$event = new Event(
+$event = new ImmutableEvent(
     name: 'user.login',
     target: $user,
     params: [
@@ -44,6 +77,32 @@ $event = new Event(
     ]
 );
 ```
+
+**Benefits:**
+- Thread-safe and predictable
+- Original event state preserved
+- Easier debugging and testing
+- PSR-14 best practices
+
+### MutableEvent
+
+Use `MutableEvent` when you need to modify events in place:
+
+```php
+use Webware\Event\MutableEvent;
+
+$event = new MutableEvent('order.placed', $order);
+
+// Modify the event in place
+$event->setName('order.confirmed');
+$event->setParams(['payment_method' => 'credit_card']);
+```
+
+**Use Cases:**
+- Performance-critical scenarios
+- Progressive event enrichment by multiple listeners
+- Working with legacy code that expects mutable objects
+- Event decoration patterns
 
 ## Event Properties
 
@@ -123,12 +182,14 @@ $event = new Event('simple.event');
 $params = $event->getParams(); // []
 ```
 
-## Event Immutability
+## Working with Immutable Events
 
-Events are **immutable**. Methods starting with `with*` return a new instance:
+`ImmutableEvent` uses methods starting with `with*` that return new instances:
 
 ```php
-$original = new Event('user.created', $user);
+use Webware\Event\ImmutableEvent;
+
+$original = new ImmutableEvent('user.created', $user);
 
 // Create modified versions
 $renamed = $original->withName('user.registered');
@@ -139,17 +200,10 @@ $withParams = $original->withParams(['source' => 'api']);
 echo $original->getName(); // Still 'user.created'
 ```
 
-### Immutability Benefits
-
-1. **Thread Safety** - Events can be safely passed around
-2. **Debugging** - Original event state preserved
-3. **Testing** - Predictable behavior
-4. **PSR-14 Compliance** - Follows best practices
-
 ### Chaining With Methods
 
 ```php
-$event = new Event('order.placed', $order);
+$event = new ImmutableEvent('order.placed', $order);
 
 $enrichedEvent = $event
     ->withName('order.confirmed')
@@ -159,17 +213,49 @@ $enrichedEvent = $event
     ]);
 ```
 
+## Working with Mutable Events
+
+`MutableEvent` uses `set*` methods that modify the event in place:
+
+```php
+use Webware\Event\MutableEvent;
+
+$event = new MutableEvent('user.created', $user);
+
+// Modify in place
+$event->setName('user.registered');
+$event->setTarget($newUser);
+$event->setParams(['source' => 'api']);
+
+echo $event->getName(); // 'user.registered'
+```
+
+### Sequential Modifications
+
+```php
+$event = new MutableEvent('order.placed', $order);
+
+// Each call modifies the same instance
+$event->setName('order.confirmed');
+$event->setParams(['payment_method' => 'credit_card']);
+$event->setParams(array_merge($event->getParams(), [
+    'total' => $order->getTotal()
+]));
+```
+
 ## Creating Custom Event Classes
 
-For domain-specific events, extend the `Event` class:
+### Custom Immutable Events
+
+For domain-specific immutable events, extend `ImmutableEvent`:
 
 ```php
 namespace App\Event;
 
-use Webware\Event\Event;
+use Webware\Event\ImmutableEvent;
 use App\Entity\User;
 
-class UserRegisteredEvent extends Event
+final readonly class UserRegisteredEvent extends ImmutableEvent
 {
     public function __construct(User $user, array $metadata = [])
     {
@@ -182,7 +268,9 @@ class UserRegisteredEvent extends Event
 
     public function getUser(): User
     {
-        return $this->getTarget();
+        $target = $this->getTarget();
+        assert($target instanceof User);
+        return $target;
     }
 
     public function getIpAddress(): ?string
@@ -197,13 +285,6 @@ class UserRegisteredEvent extends Event
 }
 ```
 
-**Benefits:**
-
-- Type safety with specific getters
-- Domain language
-- Encapsulation of event logic
-- IDE autocomplete support
-
 **Usage:**
 
 ```php
@@ -215,6 +296,70 @@ $event = new UserRegisteredEvent($user, [
 $user = $event->getUser(); // Type-hinted User object
 $ip = $event->getIpAddress(); // Type-hinted string|null
 ```
+
+### Custom Mutable Events
+
+For domain-specific mutable events, extend `MutableEvent`:
+
+```php
+namespace App\Event;
+
+use Webware\Event\MutableEvent;
+use App\Entity\Order;
+
+final class OrderProcessingEvent extends MutableEvent
+{
+    public function __construct(Order $order)
+    {
+        parent::__construct(
+            name: 'order.processing',
+            target: $order,
+            params: ['status' => 'pending']
+        );
+    }
+
+    public function getOrder(): Order
+    {
+        $target = $this->getTarget();
+        assert($target instanceof Order);
+        return $target;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->getParams()['status'] ?? 'pending';
+    }
+
+    public function updateStatus(string $status): void
+    {
+        $this->setParams(array_merge($this->getParams(), ['status' => $status]));
+    }
+
+    public function addValidationError(string $error): void
+    {
+        $params = $this->getParams();
+        $params['errors'][] = $error;
+        $this->setParams($params);
+    }
+}
+```
+
+**Usage:**
+
+```php
+$event = new OrderProcessingEvent($order);
+
+// Listeners can progressively enrich the event
+$event->updateStatus('validated');
+$event->addValidationError('Insufficient stock');
+```
+
+**Benefits:**
+
+- Type safety with specific getters
+- Domain language
+- Encapsulation of event logic
+- IDE autocomplete support
 
 ## Event Naming Strategies
 

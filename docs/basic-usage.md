@@ -12,19 +12,23 @@ The library revolves around three main components:
 
 ## Creating Events
 
-Events are created using the `Event` class:
+The library provides two event implementations:
+
+### ImmutableEvent (Recommended)
+
+Immutable events return new instances when modified:
 
 ```php
-use Webware\Event\Event;
+use Webware\Event\ImmutableEvent;
 
 // Simple event with just a name
-$event = new Event('user.registered');
+$event = new ImmutableEvent('user.registered');
 
 // Event with a target object
-$event = new Event('user.registered', $user);
+$event = new ImmutableEvent('user.registered', $user);
 
 // Event with target and parameters
-$event = new Event(
+$event = new ImmutableEvent(
     name: 'user.registered',
     target: $user,
     params: [
@@ -32,6 +36,18 @@ $event = new Event(
         'timestamp' => time(),
     ]
 );
+```
+
+### MutableEvent
+
+Mutable events modify in place:
+
+```php
+use Webware\Event\MutableEvent;
+
+$event = new MutableEvent('user.registered', $user);
+$event->setParams(['timestamp' => time()]);
+// Same instance is modified
 ```
 
 ### Event Properties
@@ -111,7 +127,7 @@ Inject the event dispatcher and dispatch events:
 
 ```php
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Webware\Event\Event;
+use Webware\Event\ImmutableEvent;
 
 class UserService
 {
@@ -124,8 +140,8 @@ class UserService
         $user = new User($data);
         $user->save();
 
-        // Dispatch the event
-        $event = new Event('user.registered', $user);
+        // Dispatch immutable event
+        $event = new ImmutableEvent('user.registered', $user);
         $this->dispatcher->dispatch($event);
 
         return $user;
@@ -158,12 +174,16 @@ return [
 
 All listeners will be called when the event is dispatched.
 
-## Event Immutability
+## Modifying Events
 
-Events are immutable. To modify an event, use the `with*()` methods:
+### With Immutable Events
+
+Use `with*()` methods to create new instances:
 
 ```php
-$event = new Event('user.updated', $user);
+use Webware\Event\ImmutableEvent;
+
+$event = new ImmutableEvent('user.updated', $user);
 
 // Create a new event with different name
 $renamedEvent = $event->withName('user.modified');
@@ -178,9 +198,32 @@ $enrichedEvent = $event->withParams(['action' => 'profile_update']);
 $modifiedEvent = $event
     ->withName('user.profile.updated')
     ->withParams(['field' => 'email']);
+
+// Original event remains unchanged
+echo $event->getName(); // 'user.updated'
 ```
 
-The original event remains unchanged.
+### With Mutable Events
+
+Use `set*()` methods to modify in place:
+
+```php
+use Webware\Event\MutableEvent;
+
+$event = new MutableEvent('user.updated', $user);
+
+// Modify the same instance
+$event->setName('user.modified');
+$event->setTarget($newUser);
+$event->setParams(['action' => 'profile_update']);
+
+// Sequential modifications
+$event->setName('user.profile.updated');
+$event->setParams(array_merge($event->getParams(), ['field' => 'email']));
+
+// Same instance was modified
+echo $event->getName(); // 'user.profile.updated'
+```
 
 ## Accessing Event Data
 

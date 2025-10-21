@@ -9,20 +9,13 @@ use League\Event\HasEventName;
 interface EventInterface extends HasEventName
 {
     public function getName(): string;
-
-    public function withName(string $name): self;
-
+    public function setName(string $name): void;
     public function getTarget(): ?object;
-
-    public function withTarget(object $target): self;
+    public function setTarget(object $target): void;
 
     /**
      * @return array<array-key, mixed>|null
      */
     public function getParams(): ?array;
-
-    /**
-     * @param array<array-key, mixed> $params
-     */
-    public function withParams(array $params): self;
+    public function setParams(array $params): void;
 }

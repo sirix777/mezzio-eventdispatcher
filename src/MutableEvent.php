@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Webware\Event;
 
-readonly class Event implements EventInterface
+class MutableEvent implements EventInterface
 {
     /**
      * @param array<array-key, mixed>|null $params
@@ -26,9 +26,9 @@ readonly class Event implements EventInterface
         return $this->name ?? self::class;
     }
 
-    public function withName(string $name): self
+    public function setName(string $name): void
     {
-        return new self($name, $this->target, $this->params);
+        $this->name = $name;
     }
 
     public function getTarget(): ?object
@@ -36,9 +36,9 @@ readonly class Event implements EventInterface
         return $this->target;
     }
 
-    public function withTarget(object $target): self
+    public function setTarget(object $target): void
     {
-        return new self($this->name, $target, $this->params);
+        $this->target = $target;
     }
 
     /**
@@ -52,8 +52,8 @@ readonly class Event implements EventInterface
     /**
      * @param array<array-key, mixed> $params
      */
-    public function withParams(array $params): self
+    public function setParams(array $params): void
     {
-        return new self($this->name, $this->target, $params);
+        $this->params = $params;
     }
 }

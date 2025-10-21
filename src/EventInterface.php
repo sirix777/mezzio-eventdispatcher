@@ -9,6 +9,7 @@ use League\Event\HasEventName;
 interface EventInterface extends HasEventName
 {
     public function getName(): string;
+
     public function getTarget(): ?object;
 
     /**

@@ -7,6 +7,7 @@ namespace Webware\Event;
 interface ImmutableEventInterface extends EventInterface
 {
     public function withName(string $name): self;
+
     public function withTarget(object $target): self;
 
     /**

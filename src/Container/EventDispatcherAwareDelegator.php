@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Webware\Event\Container;
 
+use League\Event\EventDispatcher;
 use League\Event\EventDispatcherAware;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 use function assert;
 
@@ -18,8 +18,8 @@ final class EventDispatcherAwareDelegator
         if (! $serviceInstance instanceof EventDispatcherAware) {
             return $serviceInstance;
         }
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        assert($eventDispatcher instanceof EventDispatcherInterface);
+        $eventDispatcher = $container->get(EventDispatcher::class);
+        assert($eventDispatcher instanceof EventDispatcher);
         $serviceInstance->useEventDispatcher($eventDispatcher);
         return $serviceInstance;
     }

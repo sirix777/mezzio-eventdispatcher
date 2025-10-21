@@ -7,28 +7,28 @@ namespace WebwareTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Webware\Event\Event;
-use Webware\Event\EventInterface;
+use Webware\Event\ImmutableEvent;
+use Webware\Event\ImmutableEventInterface;
 
-#[CoversClass(Event::class)]
-final class EventTest extends TestCase
+#[CoversClass(ImmutableEvent::class)]
+final class ImmutableEventTest extends TestCase
 {
-    public function testEventImplementsEventInterface(): void
+    public function testEventImplementsImmutableEventInterface(): void
     {
-        $event = new Event();
-        $this->assertInstanceOf(EventInterface::class, $event);
+        $event = new ImmutableEvent();
+        $this->assertInstanceOf(ImmutableEventInterface::class, $event);
     }
 
     public function testDefaultNameIsClassName(): void
     {
-        $event = new Event();
-        $this->assertSame(Event::class, $event->getName());
-        $this->assertSame(Event::class, $event->eventName());
+        $event = new ImmutableEvent();
+        $this->assertSame(ImmutableEvent::class, $event->getName());
+        $this->assertSame(ImmutableEvent::class, $event->eventName());
     }
 
     public function testCanCreateEventWithCustomName(): void
     {
-        $event = new Event('custom.event.name');
+        $event = new ImmutableEvent('custom.event.name');
         $this->assertSame('custom.event.name', $event->getName());
         $this->assertSame('custom.event.name', $event->eventName());
     }
@@ -38,7 +38,7 @@ final class EventTest extends TestCase
         $target           = new stdClass();
         $target->property = 'value';
 
-        $event = new Event('test.event', $target);
+        $event = new ImmutableEvent('test.event', $target);
 
         $this->assertSame($target, $event->getTarget());
         $this->assertSame('value', $event->getTarget()->property);
@@ -47,20 +47,20 @@ final class EventTest extends TestCase
     public function testCanCreateEventWithParams(): void
     {
         $params = ['key1' => 'value1', 'key2' => 'value2'];
-        $event  = new Event('test.event', null, $params);
+        $event  = new ImmutableEvent('test.event', null, $params);
 
         $this->assertSame($params, $event->getParams());
     }
 
     public function testGetParamsReturnsEmptyArrayWhenNotSet(): void
     {
-        $event = new Event();
+        $event = new ImmutableEvent();
         $this->assertSame([], $event->getParams());
     }
 
     public function testWithNameCreatesNewInstance(): void
     {
-        $event         = new Event('original.name');
+        $event         = new ImmutableEvent('original.name');
         $modifiedEvent = $event->withName('modified.name');
 
         $this->assertNotSame($event, $modifiedEvent);
@@ -71,7 +71,7 @@ final class EventTest extends TestCase
     public function testWithNamePreservesTarget(): void
     {
         $target        = new stdClass();
-        $event         = new Event('test.event', $target);
+        $event         = new ImmutableEvent('test.event', $target);
         $modifiedEvent = $event->withName('new.name');
 
         $this->assertSame($target, $modifiedEvent->getTarget());
@@ -80,7 +80,7 @@ final class EventTest extends TestCase
     public function testWithNamePreservesParams(): void
     {
         $params        = ['key' => 'value'];
-        $event         = new Event('test.event', null, $params);
+        $event         = new ImmutableEvent('test.event', null, $params);
         $modifiedEvent = $event->withName('new.name');
 
         $this->assertSame($params, $modifiedEvent->getParams());
@@ -91,7 +91,7 @@ final class EventTest extends TestCase
         $target1 = new stdClass();
         $target2 = new stdClass();
 
-        $event         = new Event('test.event', $target1);
+        $event         = new ImmutableEvent('test.event', $target1);
         $modifiedEvent = $event->withTarget($target2);
 
         $this->assertNotSame($event, $modifiedEvent);
@@ -102,7 +102,7 @@ final class EventTest extends TestCase
     public function testWithTargetPreservesName(): void
     {
         $target        = new stdClass();
-        $event         = new Event('test.event');
+        $event         = new ImmutableEvent('test.event');
         $modifiedEvent = $event->withTarget($target);
 
         $this->assertSame('test.event', $modifiedEvent->getName());
@@ -112,7 +112,7 @@ final class EventTest extends TestCase
     {
         $target        = new stdClass();
         $params        = ['key' => 'value'];
-        $event         = new Event('test.event', null, $params);
+        $event         = new ImmutableEvent('test.event', null, $params);
         $modifiedEvent = $event->withTarget($target);
 
         $this->assertSame($params, $modifiedEvent->getParams());
@@ -123,7 +123,7 @@ final class EventTest extends TestCase
         $params1 = ['key1' => 'value1'];
         $params2 = ['key2' => 'value2'];
 
-        $event         = new Event('test.event', null, $params1);
+        $event         = new ImmutableEvent('test.event', null, $params1);
         $modifiedEvent = $event->withParams($params2);
 
         $this->assertNotSame($event, $modifiedEvent);
@@ -134,7 +134,7 @@ final class EventTest extends TestCase
     public function testWithParamsPreservesName(): void
     {
         $params        = ['key' => 'value'];
-        $event         = new Event('test.event');
+        $event         = new ImmutableEvent('test.event');
         $modifiedEvent = $event->withParams($params);
 
         $this->assertSame('test.event', $modifiedEvent->getName());
@@ -144,7 +144,7 @@ final class EventTest extends TestCase
     {
         $target        = new stdClass();
         $params        = ['key' => 'value'];
-        $event         = new Event('test.event', $target);
+        $event         = new ImmutableEvent('test.event', $target);
         $modifiedEvent = $event->withParams($params);
 
         $this->assertSame($target, $modifiedEvent->getTarget());
@@ -152,7 +152,7 @@ final class EventTest extends TestCase
 
     public function testEventIsReadonly(): void
     {
-        $event = new Event('test.event');
+        $event = new ImmutableEvent('test.event');
 
         // Since it's a readonly class, we can verify by attempting to clone
         $cloned = clone $event;
@@ -166,7 +166,7 @@ final class EventTest extends TestCase
         $target->id = 123;
         $params     = ['action' => 'create', 'user_id' => 456];
 
-        $event = new Event('user.created', $target, $params);
+        $event = new ImmutableEvent('user.created', $target, $params);
 
         $this->assertSame('user.created', $event->getName());
         $this->assertSame($target, $event->getTarget());
@@ -181,7 +181,7 @@ final class EventTest extends TestCase
         $params1 = ['key1' => 'value1'];
         $params2 = ['key2' => 'value2'];
 
-        $original = new Event('original.name', $target1, $params1);
+        $original = new ImmutableEvent('original.name', $target1, $params1);
         $modified = $original
             ->withName('modified.name')
             ->withTarget($target2)
@@ -200,13 +200,13 @@ final class EventTest extends TestCase
 
     public function testTargetCanBeNull(): void
     {
-        $event = new Event('test.event');
+        $event = new ImmutableEvent('test.event');
         $this->assertNull($event->getTarget());
     }
 
     public function testParamsCanHandleEmptyArray(): void
     {
-        $event = new Event('test.event', null, []);
+        $event = new ImmutableEvent('test.event', null, []);
         $this->assertSame([], $event->getParams());
     }
 
@@ -222,7 +222,7 @@ final class EventTest extends TestCase
             'mixed'  => 'string',
         ];
 
-        $event = new Event('test.event', null, $params);
+        $event = new ImmutableEvent('test.event', null, $params);
         $this->assertSame($params, $event->getParams());
     }
 }

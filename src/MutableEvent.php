@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Webware\Event;
 
-class MutableEvent implements EventInterface
+use Override;
+
+class MutableEvent implements MutableEventInterface
 {
     /**
      * @param array<array-key, mixed>|null $params
@@ -16,42 +18,43 @@ class MutableEvent implements EventInterface
     ) {
     }
 
+    #[Override]
     public function getName(): string
     {
         return $this->eventName();
     }
 
+    #[Override]
     public function eventName(): string
     {
         return $this->name ?? self::class;
     }
 
+    #[Override]
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    #[Override]
     public function getTarget(): ?object
     {
         return $this->target;
     }
 
+    #[Override]
     public function setTarget(object $target): void
     {
         $this->target = $target;
     }
 
-    /**
-     * @return array<array-key, mixed>
-     */
+    #[Override]
     public function getParams(): array
     {
         return $this->params ?? [];
     }
 
-    /**
-     * @param array<array-key, mixed> $params
-     */
+    #[Override]
     public function setParams(array $params): void
     {
         $this->params = $params;

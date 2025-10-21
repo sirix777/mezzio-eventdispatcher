@@ -7,6 +7,7 @@ namespace Webware\Event;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use League\Event\ListenerRegistry;
 use League\Event\ListenerSubscriber as ListenerSubscriberInterface;
+use Override;
 use Psr\Container\ContainerInterface;
 
 use function assert;
@@ -21,6 +22,7 @@ final readonly class ListenerSubscriber implements ListenerSubscriberInterface
     ) {
     }
 
+    #[Override]
     public function subscribeListeners(ListenerRegistry $registry): void
     {
         /** @var array<string, mixed> $config */

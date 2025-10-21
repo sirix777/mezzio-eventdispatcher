@@ -29,7 +29,7 @@
     },
     "extra": {
         "laminas": {
-            "config-provider": "PhpCmd\\Event\\ConfigProvider"
+            "config-provider": "Webware\\Event\\ConfigProvider"
         }
     },
     "require": {

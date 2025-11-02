@@ -8,6 +8,7 @@ use League\Event\ListenerSubscriber as ListenerSubscriberInterface;
 use Psr\Container\ContainerInterface;
 use Webware\Event\ListenerSubscriber;
 
+/** @internal */
 final class ListenerSubscriberFactory
 {
     public function __invoke(ContainerInterface $container): ListenerSubscriberInterface

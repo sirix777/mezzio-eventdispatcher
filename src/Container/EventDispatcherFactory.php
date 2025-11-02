@@ -12,6 +12,7 @@ use Webware\Event\ConfigKey;
 
 use function assert;
 
+/** @internal */
 final class EventDispatcherFactory
 {
     public function __invoke(ContainerInterface $container): EventDispatcherInterface

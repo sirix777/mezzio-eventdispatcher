@@ -12,7 +12,7 @@ class MutableEvent implements MutableEventInterface
      * @param array<array-key, mixed>|null $params
      */
     public function __construct(
-        private ?string $name = self::class,
+        private ?string $name = null,
         private ?object $target = null,
         private ?array $params = null,
     ) {
@@ -27,7 +27,7 @@ class MutableEvent implements MutableEventInterface
     #[Override]
     public function eventName(): string
     {
-        return $this->name ?? self::class;
+        return $this->name ?? static::class;
     }
 
     #[Override]

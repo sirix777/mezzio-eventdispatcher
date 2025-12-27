@@ -8,6 +8,9 @@ use League\Event\EventDispatcher;
 use League\Event\PrioritizedListenerRegistry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait EventDispatcherAwareTrait
 {
     private readonly ?EventDispatcherInterface $eventDispatcher;

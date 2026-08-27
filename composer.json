@@ -1,5 +1,5 @@
 {
-    "name": "webware/mezzio-eventdispatcher",
+    "name": "sirix/mezzio-eventdispatcher",
     "description": "League EventDispatcher",
     "license": "BSD-3-Clause",
     "keywords": [
@@ -10,10 +10,10 @@
         "psr14",
         "mezzio"
     ],
-    "homepage": "https://github.com/tyrsson/mezzio-eventdispatcher",
+    "homepage": "https://github.com/sirix777/mezzio-eventdispatcher",
     "support": {
-        "issues": "https://github.com/tyrsson/mezzio-eventdispatcher/issues",
-        "source": "https://github.com/tyrsson/mezzio-eventdispatcher"
+        "issues": "https://github.com/sirix777/mezzio-eventdispatcher/issues",
+        "source": "https://github.com/sirix777/mezzio-eventdispatcher"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

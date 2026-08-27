@@ -13,7 +13,7 @@ This guide will walk you through installing and configuring the Mezzio Event Dis
 ### 1. Install via Composer
 
 ```bash
-composer require webware/mezzio-eventdispatcher
+composer require sirix/mezzio-eventdispatcher
 ```
 
 This will install the library and its dependencies:

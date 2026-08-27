@@ -24,7 +24,7 @@ A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing sea
 ## Installation
 
 ```bash
-composer require webware/mezzio-eventdispatcher
+composer require sirix/mezzio-eventdispatcher
 ```
 
 ## Quick Start

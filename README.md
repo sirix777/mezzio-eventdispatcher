@@ -8,8 +8,6 @@
 > copyright © 2026 Sirix. It is distributed under the
 > [BSD 3-Clause License](LICENSE).
 
-[![PHP Version](https://img.shields.io/badge/php-8.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-blue)](https://www.php.net/)
-[![License](https://img.shields.io/badge/license-BSD--3--Clause-green)](LICENSE)
 
 A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing seamless integration between [League Event](https://event.thephpleague.com/) and Laminas ServiceManager.
 

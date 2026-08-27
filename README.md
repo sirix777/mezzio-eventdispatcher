@@ -1,5 +1,7 @@
 # Mezzio Event Dispatcher
 
+[![Latest Stable Version](http://poser.pugx.org/sirix/mezzio-eventdispatcher/v)](https://packagist.org/packages/sirix/mezzio-eventdispatcher) [![Total Downloads](http://poser.pugx.org/sirix/mezzio-eventdispatcher/downloads)](https://packagist.org/packages/sirix/mezzio-eventdispatcher) [![Latest Unstable Version](http://poser.pugx.org/sirix/mezzio-eventdispatcher/v/unstable)](https://packagist.org/packages/sirix/mezzio-eventdispatcher) [![License](http://poser.pugx.org/sirix/mezzio-eventdispatcher/license)](https://packagist.org/packages/sirix/mezzio-eventdispatcher) [![PHP Version Require](http://poser.pugx.org/sirix/mezzio-eventdispatcher/require/php)](https://packagist.org/packages/sirix/mezzio-eventdispatcher)
+
 > **Fork notice:** This project is a maintained fork of
 > [`tyrsson/mezzio-eventdispatcher`](https://github.com/tyrsson/mezzio-eventdispatcher).
 > Original code is copyright © 2025 Joey Smith. Fork-specific changes are

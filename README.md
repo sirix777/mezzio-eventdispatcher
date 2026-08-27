@@ -1,5 +1,11 @@
 # Mezzio Event Dispatcher
 
+> **Fork notice:** This project is a maintained fork of
+> [`tyrsson/mezzio-eventdispatcher`](https://github.com/tyrsson/mezzio-eventdispatcher).
+> Original code is copyright © 2025 Joey Smith. Fork-specific changes are
+> copyright © 2026 Sirix. It is distributed under the
+> [BSD 3-Clause License](LICENSE).
+
 [![PHP Version](https://img.shields.io/badge/php-8.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-blue)](https://www.php.net/)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-green)](LICENSE)
 

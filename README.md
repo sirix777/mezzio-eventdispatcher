@@ -19,7 +19,6 @@ A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing sea
 - ✅ **Immutable Events** - Type-safe, immutable event objects with fluent API
 - ✅ **Priority Support** - Control listener execution order with priority levels
 - ✅ **Type Safe** - PHP 8.3+ with strict types, readonly classes, and comprehensive PHPStan Level 10 coverage
-- ✅ **Fully Tested** - 91 tests with comprehensive unit and integration coverage
 
 ## Requirements
 
@@ -241,7 +240,7 @@ composer check
 - **PHPStan Level 10** - Maximum static analysis strictness
 - **Laminas Coding Standard** - PSR-12 compliant with additional quality rules
 - **100% Type Coverage** - Strict types and comprehensive type hints
-- **Comprehensive Tests** - 91 tests covering all functionality
+- **Comprehensive Tests** - unit and integration tests covering all functionality
 
 ## Contributing
 

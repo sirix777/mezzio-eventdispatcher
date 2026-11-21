@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Development tooling: PHPUnit `^12.5`; mocks without expectations are now
   stubs, and container mocks that check arguments with `with()` now declare
-  `once()`. The PHPStan CI job runs on PHP 8.3.
+  `once()`. The PHPStan CI job runs on PHP 8.3. `composer.lock` is no longer
+  tracked.
 
 ### Removed
 - PHP 8.2 support. Supported versions are now PHP 8.3–8.6.

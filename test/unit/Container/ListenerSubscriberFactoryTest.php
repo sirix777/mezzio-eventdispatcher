@@ -23,7 +23,7 @@ final class ListenerSubscriberFactoryTest extends TestCase
 
     public function testFactoryReturnsListenerSubscriberInterface(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subscriber = ($this->factory)($container);
 
@@ -32,7 +32,7 @@ final class ListenerSubscriberFactoryTest extends TestCase
 
     public function testFactoryReturnsListenerSubscriber(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subscriber = ($this->factory)($container);
 
@@ -41,7 +41,7 @@ final class ListenerSubscriberFactoryTest extends TestCase
 
     public function testFactoryPassesContainerToSubscriber(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subscriber = ($this->factory)($container);
 
@@ -52,7 +52,7 @@ final class ListenerSubscriberFactoryTest extends TestCase
 
     public function testFactoryCreatesNewInstanceOnEachInvocation(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subscriber1 = ($this->factory)($container);
         $subscriber2 = ($this->factory)($container);
@@ -64,8 +64,8 @@ final class ListenerSubscriberFactoryTest extends TestCase
 
     public function testFactoryWorksWithDifferentContainers(): void
     {
-        $container1 = $this->createMock(ContainerInterface::class);
-        $container2 = $this->createMock(ContainerInterface::class);
+        $container1 = $this->createStub(ContainerInterface::class);
+        $container2 = $this->createStub(ContainerInterface::class);
 
         $subscriber1 = ($this->factory)($container1);
         $subscriber2 = ($this->factory)($container2);

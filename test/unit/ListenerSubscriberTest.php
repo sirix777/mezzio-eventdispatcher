@@ -19,7 +19,7 @@ final class ListenerSubscriberTest extends TestCase
 {
     public function testImplementsListenerSubscriberInterface(): void
     {
-        $container  = $this->createMock(ContainerInterface::class);
+        $container  = $this->createStub(ContainerInterface::class);
         $subscriber = new ListenerSubscriber($container);
 
         $this->assertInstanceOf(ListenerSubscriberInterface::class, $subscriber);
@@ -28,7 +28,7 @@ final class ListenerSubscriberTest extends TestCase
     public function testSubscribeListenersWithEmptyConfig(): void
     {
         $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')
+        $container->expects($this->once())->method('get')
             ->with('config')
             ->willReturn([ConfigKey::Listeners->value => []]);
 
@@ -43,7 +43,7 @@ final class ListenerSubscriberTest extends TestCase
     public function testSubscribeListenersWithMissingListenersKey(): void
     {
         $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')
+        $container->expects($this->once())->method('get')
             ->with('config')
             ->willReturn([]);
 
@@ -75,7 +75,7 @@ final class ListenerSubscriberTest extends TestCase
                 return $listener;
             });
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with('TestListener')
             ->willReturn(true);
 
@@ -111,7 +111,7 @@ final class ListenerSubscriberTest extends TestCase
                 return $listener;
             });
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with('TestListener')
             ->willReturn(true);
 
@@ -136,15 +136,15 @@ final class ListenerSubscriberTest extends TestCase
         ];
 
         $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')
+        $container->expects($this->once())->method('get')
             ->with('config')
             ->willReturn([ConfigKey::Listeners->value => [$listenerSpec]]);
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with('MissingListener')
             ->willReturn(false);
 
-        $registry = $this->createMock(ListenerRegistry::class);
+        $registry = $this->createStub(ListenerRegistry::class);
 
         $subscriber = new ListenerSubscriber($container);
 
@@ -163,7 +163,7 @@ final class ListenerSubscriberTest extends TestCase
         ];
 
         $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')
+        $container->expects($this->once())->method('get')
             ->with('config')
             ->willReturn([ConfigKey::Listeners->value => $invalidSpecs]);
 
@@ -195,7 +195,7 @@ final class ListenerSubscriberTest extends TestCase
             ],
         ];
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSpecs, $listener1, $listener2) {
                 if ($id === 'config') {
@@ -253,7 +253,7 @@ final class ListenerSubscriberTest extends TestCase
                 return $listener;
             });
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with('ValidListener')
             ->willReturn(true);
 
@@ -284,7 +284,7 @@ final class ListenerSubscriberTest extends TestCase
             ],
         ];
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSpecs, $listener) {
                 if ($id === 'config') {
@@ -306,7 +306,7 @@ final class ListenerSubscriberTest extends TestCase
 
     public function testSubscriberIsReadonly(): void
     {
-        $container  = $this->createMock(ContainerInterface::class);
+        $container  = $this->createStub(ContainerInterface::class);
         $subscriber = new ListenerSubscriber($container);
 
         // Since it's a readonly class, we can verify by cloning

@@ -4,7 +4,7 @@ This guide will walk you through installing and configuring the Mezzio Event Dis
 
 ## Requirements
 
-- PHP 8.2, 8.3, 8.4, or 8.5
+- PHP 8.3, 8.4, 8.5, or 8.6
 - Composer
 - A PSR-11 Container implementation (Laminas ServiceManager recommended)
 

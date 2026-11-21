@@ -10,3 +10,7 @@ on:
 jobs:
   ci:
     uses: laminas/workflow-continuous-integration/.github/workflows/continuous-integration.yml@1.x
+    # the reusable workflow needs checks: write; the repository default token is read-only
+    permissions:
+      checks: write
+      contents: read

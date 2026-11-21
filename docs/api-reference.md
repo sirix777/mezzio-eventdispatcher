@@ -487,7 +487,7 @@ use League\Event\ListenerSubscriber as ListenerSubscriberInterface;
 
 ## Version Compatibility
 
-- **PHP:** 8.2, 8.3, 8.4, 8.5
+- **PHP:** 8.3, 8.4, 8.5, 8.6
 - **league/event:** ^3.0
 - **psr/container:** ^2.0
 - **beberlei/assert:** ^3.3

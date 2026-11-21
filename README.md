@@ -8,7 +8,6 @@
 > copyright © 2026 Sirix. It is distributed under the
 > [BSD 3-Clause License](LICENSE).
 
-
 A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing seamless integration between [League Event](https://event.thephpleague.com/) and Laminas ServiceManager.
 
 ## Features
@@ -18,12 +17,11 @@ A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing sea
 - ✅ **Configuration-Based** - Register listeners and subscribers via configuration arrays
 - ✅ **Immutable Events** - Type-safe, immutable event objects with fluent API
 - ✅ **Priority Support** - Control listener execution order with priority levels
-- ✅ **Type Safe** - PHP 8.2+ with strict types, readonly classes, and comprehensive PHPStan Level 10 coverage
-- ✅ **Fully Tested** - 91 tests with comprehensive unit and integration coverage
+- ✅ **Type Safe** - PHP 8.3+ with strict types, readonly classes, and comprehensive PHPStan Level 10 coverage
 
 ## Requirements
 
-- PHP 8.2, 8.3, 8.4, or 8.5
+- PHP 8.3, 8.4, 8.5, or 8.6
 - [league/event](https://packagist.org/packages/league/event) ^3.0
 - PSR-11 Container implementation (e.g., Laminas ServiceManager)
 
@@ -241,7 +239,7 @@ composer check
 - **PHPStan Level 10** - Maximum static analysis strictness
 - **Laminas Coding Standard** - PSR-12 compliant with additional quality rules
 - **100% Type Coverage** - Strict types and comprehensive type hints
-- **Comprehensive Tests** - 91 tests covering all functionality
+- **Comprehensive Tests** - unit and integration tests covering all functionality
 
 ## Contributing
 

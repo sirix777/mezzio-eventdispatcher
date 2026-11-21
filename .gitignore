@@ -7,3 +7,4 @@
 /phpstan.neon
 /vendor/
 .idea
+composer.lock

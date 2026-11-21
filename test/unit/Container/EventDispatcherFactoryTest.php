@@ -26,9 +26,9 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactoryReturnsEventDispatcherInterface(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSubscriber) {
                 if ($id === ListenerSubscriberInterface::class) {
@@ -44,9 +44,9 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactoryReturnsEventDispatcher(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSubscriber) {
                 if ($id === ListenerSubscriberInterface::class) {
@@ -66,7 +66,7 @@ final class EventDispatcherFactoryTest extends TestCase
         $listenerSubscriber->expects($this->once())
             ->method('subscribeListeners');
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSubscriber) {
                 if ($id === ListenerSubscriberInterface::class) {
@@ -80,9 +80,9 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactoryHandlesEmptySubscribersConfig(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSubscriber) {
                 if ($id === ListenerSubscriberInterface::class) {
@@ -98,7 +98,7 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactorySubscribesAdditionalSubscribersFromConfig(): void
     {
-        $listenerSubscriber   = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber   = $this->createStub(ListenerSubscriberInterface::class);
         $additionalSubscriber = $this->createMock(ListenerSubscriberInterface::class);
         $additionalSubscriber->expects($this->once())
             ->method('subscribeListeners');
@@ -123,7 +123,7 @@ final class EventDispatcherFactoryTest extends TestCase
                 }
             );
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with($subscriberClass)
             ->willReturn(true);
 
@@ -132,7 +132,7 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactorySkipsSubscriberNotInContainer(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
         $subscriberClass    = 'NonExistentSubscriber';
 
         $container = $this->createMock(ContainerInterface::class);
@@ -144,7 +144,7 @@ final class EventDispatcherFactoryTest extends TestCase
                 return [ConfigKey::Subscribers->value => [$subscriberClass]];
             });
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with($subscriberClass)
             ->willReturn(false);
 
@@ -155,7 +155,7 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactorySkipsNonListenerSubscriberInstance(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
         $invalidSubscriber  = new stdClass();
         $subscriberClass    = 'InvalidSubscriber';
 
@@ -177,7 +177,7 @@ final class EventDispatcherFactoryTest extends TestCase
                 }
             );
 
-        $container->method('has')
+        $container->expects($this->once())->method('has')
             ->with($subscriberClass)
             ->willReturn(true);
 
@@ -188,9 +188,9 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactoryHandlesMissingSubscribersConfigKey(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(function (string $id) use ($listenerSubscriber) {
                 if ($id === ListenerSubscriberInterface::class) {
@@ -206,7 +206,7 @@ final class EventDispatcherFactoryTest extends TestCase
 
     public function testFactorySubscribesMultipleAdditionalSubscribers(): void
     {
-        $listenerSubscriber = $this->createMock(ListenerSubscriberInterface::class);
+        $listenerSubscriber = $this->createStub(ListenerSubscriberInterface::class);
         $subscriber1        = $this->createMock(ListenerSubscriberInterface::class);
         $subscriber2        = $this->createMock(ListenerSubscriberInterface::class);
 
@@ -216,7 +216,7 @@ final class EventDispatcherFactoryTest extends TestCase
         $subscriberClass1 = 'TestSubscriber1';
         $subscriberClass2 = 'TestSubscriber2';
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnCallback(
                 function (string $id) use (

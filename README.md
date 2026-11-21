@@ -8,7 +8,6 @@
 > copyright © 2026 Sirix. It is distributed under the
 > [BSD 3-Clause License](LICENSE).
 
-
 A PSR-14 Event Dispatcher library for Mezzio/Laminas applications, providing seamless integration between [League Event](https://event.thephpleague.com/) and Laminas ServiceManager.
 
 ## Features
